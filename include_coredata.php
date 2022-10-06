@@ -19,7 +19,7 @@
 	curl_close($ch);
 
 	// get current supply, hash rate etc:
-	curl_setopt($ch, CURLOPT_URL, 'http://localhost/~danielmattes/dynexexplorer/api.php');
+	curl_setopt($ch, CURLOPT_URL, 'https://dynex.dyndns.org/api.php');
     curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
