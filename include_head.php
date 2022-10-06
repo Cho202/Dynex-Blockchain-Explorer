@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
 
 	<meta charset="utf-8" />
-		<title>Dynex Blockchain Explorer | '.substr($_SERVER['REQUEST_URI'],1);?></title>
+		<title>Dynex Blockchain Explorer</title>
 		<meta name="description" content="Nnext-generation platform for neuromorphic computing based on a new flexible blockchain protocol" />
 		<meta name="Author" content="Dynex Platform" />
 		<meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0" />

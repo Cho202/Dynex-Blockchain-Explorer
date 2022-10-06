@@ -13,6 +13,9 @@
       <li class="nav-item">
         <a class="nav-link text-white" href="richlist.php">RICHLIST</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="api_specs.php">API</a>
+      </li>
     </ul>
 
     <div class="wd-4 text-right" style="width: 100%;">
