@@ -19,13 +19,17 @@
 	curl_close($ch);
 
 	// get current supply, hash rate etc:
-	curl_setopt($ch, CURLOPT_URL, 'https://dynex.dyndns.org/api.php');
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, 'https://localhost/api.php');
     curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
     curl_setopt($ch, CURLOPT_ENCODING, 'gzip,deflate');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
     $ret = curl_exec($ch);
     $ret_json = json_decode($ret,true);
 
