@@ -24,6 +24,7 @@
 	echo '<table class="fs-12 text-silver" width="100%">';
 	echo '<th>BLOCK</th>';
 	echo '<th>TIMESTAMP</th>';
+	echo '<th>TIME</th>';
 	echo '<th>BLOCK HASH</th>';
 	echo '<th>MINER UNLOCK</th>';
 	echo '<th class="text-right">TRANSACTIONS</th>';
@@ -54,6 +55,8 @@
     	echo '<tr class="border-dark border-bottom" style="border-top: none; border-bottom: none;">';
     	echo '<td>'.$i.'</td>';
     	echo '<td>'.gmdate("Y-m-d\TH:i:s\Z", $data['timestamp']).'</td>';
+    	$ago_min = ((time()-$data['timestamp'])/60);
+    	echo '<td>- '.number_format($ago_min,2).' MIN</td>';
     	echo '<td><a class="text-blue" href="show_block.php?block='.$i.'">'.$block_id.'</a></td>';
     	
     	$until_unlock = $height - $data['miner_tx']['unlock_time'];

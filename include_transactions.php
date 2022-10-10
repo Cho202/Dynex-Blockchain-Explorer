@@ -24,6 +24,7 @@
 	echo '<table class="fs-12 text-silver" width="100%" style="border-collapse: collapse;">';
 	echo '<th>BLOCK</th>';
 	echo '<th>TIMESTAMP</th>';
+	echo '<th>TIME</th>';
 	echo '<th>TRANSACTION</th>';
 	echo '<th class="text-right">INPUTS</th>';
 	echo '<th class="text-right">#INPUTS</th>';
@@ -31,6 +32,7 @@
 	echo '<th class="text-right">#OUTPUTS</th>';
 	$found_tx = 0;
 	$check_block = $height;
+	$rem_block = 0;
 	while ($found_tx<20) {
 		// -------------------------------------------------------------------------------------------------------------------------------
 		$ch = curl_init();
@@ -113,8 +115,17 @@
 									$i2++;
 								}
 								echo '<tr class="border-dark border-bottom" style="border-top: none; border-bottom: none;">';
-								echo '<td><a class="text-blue" href="show_block.php?block='.$check_block.'">'.$check_block.'</a></td>';
+								if ($check_block!=$rem_block) {
+									echo '<td><a class="text-blue" href="show_block.php?block='.$check_block.'">'.$check_block.'</a></td>';
+									$rem_block = $check_block;
+								} else {
+									echo '<td>&nbsp;</td>';
+								}
+
+								
 								echo '<td>'.$blocktime.'</td>';
+								$ago_min = ((time()-$data['timestamp'])/60);
+    							echo '<td>- '.number_format($ago_min,2).' MIN</td>';
 								echo '<td><a class="text-blue" href="show_transaction.php?tx='.$tx.'">'.$tx.'</a></td>';
 								echo '<td class="text-right">'.number_format($amount_total_in/1000000000,9,'.',',').' DNX</td>';
 								echo '<td class="text-right">'.$vin_count.'</td>';

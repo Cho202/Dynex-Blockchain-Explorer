@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light border-bottom" style="background-color: #0e0e0e; position: -webkit-sticky; position: sticky; top: 0; z-index: 99;">
   <!-- Navbar content -->
-  <a class="navbar-brand" href=""><img src="assets/images/turingx-square_2.png" style="height: 50px;"></a><div class="fs-16 text-white"><strong>DYNEX BLOCKCHAIN EXPLORER</strong></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a class="navbar-brand" href="https://dynexcoin.org"><img src="assets/images/turingx-square_2.png" style="height: 50px;"></a><div class="fs-16 text-white"><strong>DYNEX BLOCKCHAIN EXPLORER</strong></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
