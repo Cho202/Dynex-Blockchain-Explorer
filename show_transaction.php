@@ -67,8 +67,15 @@
 								
 								echo '<table width="100%" class="text-silver fs-12">';
 								echo '<tr class="fs-16"><td>TRANSACTION:</td><td>'.$tx.'</td></tr>';
-								echo '<tr><td>IN BLOCK:</td><td><a class="text-blue" href="show_block.php?block='.$response_json['result']['height'].'">'.$response_json['result']['height'].'</a></td></tr>';
-								echo '<tr><td>CONFIRMATIONS:</td><td>'.$response_json['result']['current_height']-$response_json['result']['height'].'</td></tr>';
+								if ($response_json['result']['height']!=32766) {
+									echo '<tr><td>IN BLOCK:</td><td><a class="text-blue" href="show_block.php?block='.$response_json['result']['height'].'">'.$response_json['result']['height'].'</a></td></tr>';	
+									$confirmations = $response_json['result']['current_height']-$response_json['result']['height'];
+									echo '<tr><td>CONFIRMATIONS:</td><td>'.$confirmations.'</td></tr>';
+								} else {
+									echo '<tr><td>IN BLOCK:</td><td>CURRENTLY IN POOL MEMORY</td></tr>';
+									echo '<tr><td>CONFIRMATIONS:</td><td>UNCONFIRMED</td></tr>';
+								}
+								
 								//echo '<tr><td>UNLOCK TIME:</td><td>'.$data['unlock_time'].'</td></tr>';
 								echo '<tr><td>EXTRA:</td><td>'.$data['extra'].'</td></tr>';
 								echo '</table>';

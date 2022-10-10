@@ -1,4 +1,5 @@
 <?php 
+	header('Content-Type: application/json; charset=utf-8');
 	$DAEMON_ENDPOINT = "http://localhost:18333/json_rpc";
 	$DAEMON_RAW_ENDPOINT = "http://localhost:18333";
 	$block = 10000;
@@ -42,7 +43,7 @@
 	$data = get_block($top_block);
 	$output['top_block'] = $data;
 
-	header('Content-Type: application/json; charset=utf-8');
+	
 	echo json_encode($output)."\n";
 
 	//echo '<pre>';
