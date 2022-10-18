@@ -1,4 +1,6 @@
 <?php 
+	header('Content-Type: application/json; charset=utf-8');
+	
 	$DAEMON_ENDPOINT = "http://localhost:18333/json_rpc";
 	$DAEMON_RAW_ENDPOINT = "http://localhost:18333";
 	$block = 10000;
@@ -15,7 +17,6 @@
 	$block_header = get_block_header();
 	$output['already_generated_coins'] = $block_header['already_generated_coins'];
 
-	header('Content-Type: application/json; charset=utf-8');
 	//echo '<pre>'; print_r($output); echo '</pre>';
 
 	echo json_encode($output)."\n";
