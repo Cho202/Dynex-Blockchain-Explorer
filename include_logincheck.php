@@ -6,7 +6,7 @@ $company_copyright = 'Dynex Platform';
 //Daemon connect RPC endpoint:
 $DAEMON_ENDPOINT = "http://localhost:18333/json_rpc";
 $DAEMON_RAW_ENDPOINT = "http://localhost:18333";
-//error_reporting(E_PARSE);
+error_reporting(E_PARSE);
 ?>
 
 
