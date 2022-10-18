@@ -11,6 +11,26 @@
 	if (isset($_POST['tx'])) {
 		$tx = $_POST['tx'];
 	}
+	//get current height:
+	$ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $DAEMON_ENDPOINT);
+    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, "{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"getlastblockheader\"}"); 
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+    curl_setopt($ch, CURLOPT_ENCODING, 'gzip,deflate');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    $response = curl_exec($ch);
+    if (curl_errno($ch)) {
+		echo 'Error:' . curl_error($ch);
+	} else {
+		$response_json = json_decode($response,true);
+		$data = $response_json['result']['block_header'];
+		$current_height = intval($data['height']);
+	}
+	curl_close($ch);
+	//echo '<pre>'; print_r($response_json); echo '</pre>';
 ?>
 
 <!-- bg-dark: #343a40  style="background-image: url('assets/images/dashboard_background.png');" -->
@@ -37,82 +57,138 @@
 							    curl_setopt($ch, CURLOPT_URL, $DAEMON_ENDPOINT);
 							    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
 							    curl_setopt($ch, CURLOPT_POST, 1);
-							    curl_setopt($ch, CURLOPT_POSTFIELDS, "{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"gettransaction\",\"params\":{\"tx\":\"".$tx."\"}}");	
+							    curl_setopt($ch, CURLOPT_POSTFIELDS, "{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"gettransaction\",\"params\":{\"hash\":\"".$tx."\"}}");	
 							    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
 							    curl_setopt($ch, CURLOPT_ENCODING, 'gzip,deflate');
 							    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 							    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 							    $response = curl_exec($ch);
+							    //echo '<pre>'; print_r($response); echo '</pre>';
 							    if (curl_errno($ch)) {
 							    	echo 'Error:' . curl_error($ch);
 								} else {
 									// special case, dealing with " in front and end of field blockinfo
-									$response  =str_replace( '"txinfo":"{"', '"txinfo":{"', $response );
-									$response = str_replace( '}}]}"}}', '}}]}}}', $response );
 									$response_json = json_decode($response,true);
 									// error:
 									if ($response_json['result']['status']!='OK') {
-
 										echo '<pre>';
 										echo '<h4>TRANSACTION '.$tx.' NOT FOUND</h4>';
 										echo '</pre>';
 										echo '<button><a href="home.php">GO BACK</a></button>';
 										exit;
 									}
-									$data = $response_json['result']['txinfo'];
+									$data = $response_json['result']['transaction'];
 								}
 								curl_close($ch);
 								// -------------------------------------------------------------------------------------------------------------------------------
 								echo '<div class="section p-25">'; 
 								
 								echo '<table width="100%" class="text-silver fs-12">';
-								echo '<tr class="fs-16"><td>TRANSACTION:</td><td>'.$tx.'</td></tr>';
-								if ($response_json['result']['height']!=32766) {
-									echo '<tr><td>IN BLOCK:</td><td><a class="text-blue" href="show_block.php?block='.$response_json['result']['height'].'">'.$response_json['result']['height'].'</a></td></tr>';	
-									$confirmations = $response_json['result']['current_height']-$response_json['result']['height'];
-									echo '<tr><td>CONFIRMATIONS:</td><td>'.$confirmations.'</td></tr>';
+								echo '<tr class="fs-16 border-silver border-bottom"><td>TRANSACTION:</td><td>'.$tx.'</td></tr>';
+								echo '<tr><td>PAYMENT ID:</td><td>'.$data['paymentId'].'</td></tr>';
+								
+								if ($data['blockIndex']!='0') {
+									echo '<tr><td>IN BLOCK (HASH):</td><td><a class="text-blue" href="show_block.php?block='.$data['blockIndex'].'">'.$data['blockHash'].'</a></td></tr>';
+									echo '<tr><td>IN BLOCK (HEIGHT):</td><td><a class="text-blue" href="show_block.php?block='.$data['blockIndex'].'">'.$data['blockIndex'].'</a></td></tr>';
 								} else {
-									echo '<tr><td>IN BLOCK:</td><td>CURRENTLY IN POOL MEMORY</td></tr>';
-									echo '<tr><td>CONFIRMATIONS:</td><td>UNCONFIRMED</td></tr>';
+									echo '<tr><td>BLOCK HEIGHT:</td><td class="text-yellow">IN MEMORY POOL</td></tr>';
+								}
+
+								if ($data['timestamp']!='0') {
+									echo '<tr><td>TIMESTAMP:</td><td class="text-left">'.gmdate("Y-m-d\TH:i:s\Z", $data['timestamp']).'</td></tr>';
+								} else {
+									echo '<tr><td>TIMESTAMP:</td><td class="text-yellow text-left">IN MEMORY POOL</td></tr>';
 								}
 								
-								//echo '<tr><td>UNLOCK TIME:</td><td>'.$data['unlock_time'].'</td></tr>';
-								echo '<tr><td>EXTRA:</td><td>'.$data['extra'].'</td></tr>';
+								// confirmations:
+								$blockindex = intval($data['blockIndex']);
+								if ($blockindex!=0) {
+									echo '<tr><td>CONFIRMATIONS:</td><td>'.$current_height-$blockindex.'</td></tr>';
+								} else {
+									echo '<tr><td>CONFIRMATIONS:</td><td>PENDING</td></tr>';
+								}
+								
+								echo '<tr><td>UNLOCK TIME:</td><td>'.$data['unlockTime'].'</td></tr>';
+								echo '<tr><td>SIZE:</td><td>'.$data['size'].' BYTES</td></tr>';
+								echo '<tr><td>&nbsp;</td><td></td></tr>';
+								$total_in = intval($data['totalInputsAmount'])/1000000000;
+								$total_out = intval($data['totalOutputsAmount'])/1000000000;
+								$fee = intval($data['fee'])/1000000000;
+								echo '<tr><td><strong>TOTAL IN:</strong></td><td><strong>'.number_format($total_in,9,'.',',').' </strong>DNX</td></tr>';
+								echo '<tr><td><strong>TOTAL OUT:</strong></td><td><strong>'.number_format($total_out,9,'.',',').' </strong>DNX</td></tr>';
+								echo '<tr><td><strong>FEE:</strong></td><td><strong>'.number_format($fee,9,'.',',').' </strong>DNX</td></tr>';
+								
+
 								echo '</table>';
 
-								echo '<h4 class="text-white">INPUTS</h4>';
-								echo '<table width="100%" class="text-silver fs-12">';
-								$vin = $data['vin'];
-								$i = 0;
-								$amount_total = 0;
-								while($i < count($vin))
+								// inputs:
+								echo '<h4 class="text-white border-silver border-bottom">INPUTS</h4>';
+								echo '<table class="fs-12 text-silver" width="100%">';
+								echo '<th>KEY IMAGE</th>';
+								echo '<th>OUT TX-HASH</th>';
+								echo '<th class="text-right">MIXIN</th>';
+								echo '<th class="text-right">AMOUNT</th>';
+								$txs = $data['inputs'];
+								$i=0;
+								while($i < count($txs))
 								{
-									$amount = $vin[$i]['value']['amount'];
-									$amount_total = $amount_total + $amount;
-									$target = $vin[$i]['value']['k_image'];
-									$amount_str = number_format($amount/1000000000,9,'.',',');
-									$amount_str = str_pad($amount_str, 20, " ", STR_PAD_LEFT);
-									echo '<tr class="border-dark border-bottom"><td class="text-right">'.$amount_str.' DNX</td><td> => KEY-IMAGE '.$target.'</td></tr>';
-									$i++;
+									$tx = $txs[$i];
+									if (isset($tx['data']['input']['k_image'])) {									
+										echo '<tr class="border-dark border-bottom">';
+										echo '<td class="text-left">'.$tx['data']['input']['k_image'].'<br>';
+										echo '<td class="text-left">'.$tx['data']['outputs'][0]['transactionHash'].'<br>';
+										echo '<td class="text-right">'.$tx['data']['mixin'].'<br>';
+										$amount = intval($tx['data']['input']['amount'])/1000000000;
+										echo '<td class="text-right">'.number_format($amount,9,'.',',').' DNX</td>';
+										echo '</tr>';
+									}
+									$i = $i + 1;
 								}
-								echo '<tr><td>&nbsp;</td><td></td></tr><tr class="fs-14 border-dark border-bottom"><td class="text-right">'.number_format($amount_total/1000000000,9,'.',',').' DNX</td><td>&nbsp;</td></tr></table>';
+								echo '</table>';
 
-								echo '<h4 class="text-white">OUTPUTS</h4>';
-								echo '<table width="100%" class="text-silver fs-12">';
-								$vout = $data['vout'];
-								$i = 0;
-								$amount_total = 0;
-								while($i < count($vout))
+								// outputs:
+								echo '<h4 class="text-white border-silver border-bottom">OUTPUTS</h4>';
+								echo '<table class="fs-12 text-silver" width="100%">';
+								echo '<th>KEY</th>';
+								echo '<th class="text-right">GLOBAL INDEX</th>';
+								echo '<th class="text-right">AMOUNT</th>';
+								$txs = $data['outputs'];
+								$i=0;
+								while($i < count($txs))
 								{
-									$amount = $vout[$i]['amount'];
-									$amount_total = $amount_total + $amount;
-									$target = $vout[$i]['target']['data']['key'];
-									$amount_str = number_format($amount/1000000000,9,'.',',');
-									$amount_str = str_pad($amount_str, 20, " ", STR_PAD_LEFT);
-									echo '<tr class="border-dark border-bottom"><td class="text-right">'.$amount_str.' DNX</td><td> => KEY-IMAGE '.$target.'</td></tr>';
-									$i++;
+									$tx = $txs[$i];
+									if (isset($tx['output']['target']['data'])) {
+										echo '<tr class="border-dark border-bottom">';
+										echo '<td class="text-left">'.$tx['output']['target']['data']['key'].'</td>';
+										echo '<td class="text-right">'.$tx['globalIndex'].'<br>';
+										$amount = intval($tx['output']['amount'])/1000000000;
+										echo '<td class="text-right">'.number_format($amount,9,'.',',').' DNX</td>';
+										echo '</tr>';
+									}
+									$i = $i + 1;
 								}
-								echo '<tr><td>&nbsp;</td><td></td></tr><tr class="fs-14 border-dark border-bottom"><td class="text-right">'.number_format($amount_total/1000000000,9,'.',',').' DNX</td><td>&nbsp;</td></tr></table>';
+								echo '</table>';
+
+								// signatures:
+								echo '<h4 class="text-white border-silver border-bottom">SIGNATURES</h4>';
+								echo '<table class="fs-12 text-silver" width="100%">';
+								echo '<th class="text-left">FIRST</th>';
+								echo '<th class="text-left">SECOND</th>';
+								$txs = $data['signatures'];
+								$i=0;
+								while($i < count($txs))
+								{
+									$tx = $txs[$i];
+									echo '<tr class="border-dark border-bottom">';
+									echo '<td class="text-left">'.$tx['first'].'</br>';
+									echo '<td class="text-left">'.$tx['second'].'</br>';
+									$i = $i + 1;
+								}
+								echo '</table>';
+
+
+								// outputs:
+
 								
 								//print_r($data);
 								echo '</div>';

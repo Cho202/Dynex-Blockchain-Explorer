@@ -42,6 +42,20 @@ include 'include_head.php';
 			<div class="row">
 				<div class="col-md-12" valign="top">
 					<div class="card" id="1" style="background-color: #101010;">	
+						<div class="card-header border-bottom border-dark text-white" style="background-color: #0000; color: #fffff;">
+							<strong>TRANSACTIONS IN NODE MEMORY POOL</strong>
+						</div>
+						<div class="card-text p-10" style="background-color: #0e0e0e;">
+							<div id="transactionspool"><img src="assets/images/_smarty/loaders/1.gif" style="width: 50px; height: : 50px;">&nbsp;&nbsp;LOADING...</div>
+						</div>
+					</div>
+				</div>
+
+			</div> <!-- row -->
+
+			<div class="row">
+				<div class="col-md-12" valign="top">
+					<div class="card" id="1" style="background-color: #101010;">	
 						<div class="card-header border-bottom border-gray text-white" style="background-color: #0000; color: #fffff;">
 							<strong>LATEST BLOCKS</strong>
 						</div>
@@ -74,10 +88,12 @@ include 'include_head.php';
 	$(document).ready(function(){
 	$("#coredata").load("include_coredata.php");
     $("#transactions").load("include_transactions.php");
+    $("#transactionspool").load("include_transactions_pool.php");
     $("#blocks").load("include_blocks.php");
 	setInterval(function(){
 	      $("#coredata").load("include_coredata.php");
 	      $("#transactions").load("include_transactions.php");
+	      $("#transactionspool").load("include_transactions_pool.php");
 	      $("#blocks").load("include_blocks.php");
 	}, 60000);
 	});

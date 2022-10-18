@@ -8,7 +8,7 @@
 
 	<meta charset="utf-8" />
 		<title>Dynex Blockchain Explorer</title>
-		<meta name="description" content="Next-generation platform for neuromorphic computing based on a new flexible blockchain protocol" />
+		<meta name="description" content="Nnext-generation platform for neuromorphic computing based on a new flexible blockchain protocol" />
 		<meta name="Author" content="Dynex Platform" />
 		<meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0" />
 	

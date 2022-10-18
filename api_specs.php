@@ -17,193 +17,178 @@ include 'include_head.php';
 		<div class="container-fluid pl-200 pr-200">	
 				<h3 class="text-white">API Specification</h3>
 
-				<p>Current information about the blockchain can be retrieved with our Json API. Retrieve Json data with <a href="https://dynex.dyndns.org/api.php">https://dynex.dyndns.org/api.php</a>. The following blocks and fields are being returned:</p>
+                <p>Information about circulatating coins can be retrieved with our Json API. Retrieve Json data with <a href="https://dynex.dyndns.org/api_supply.php">https://dynex.dyndns.org/api_supply.php</a>. The following blocks and fields are being returned:</p>
+
+                <?php 
+                echo '<pre>';
+                echo '[already_generated_coins] => 9324215.139675710';
+                echo '</pre>';
+                ?>
+                <br><br>
+				<p>Additional information about the blockchain can be retrieved with our Json API. Retrieve Json data with <a href="https://dynex.dyndns.org/api.php">https://dynex.dyndns.org/api.php</a>. The following blocks and fields are being returned:</p>
 
 				<?php
 				echo '<pre>';
 				echo '[block_header] => Array
         (
+            [already_generated_coins] => 9323869.237687634
             [alt_blocks_count] => 0
-            [difficulty] => 155875514
-            [grey_peerlist_size] => 19
-            [height] => 16785
+            [block_major_version] => 1
+            [contact] => 
+            [cumulative_difficulty] => 11981870408612
+            [difficulty] => 2946731178
+            [fee_address] => 
+            [grey_peerlist_size] => 52
+            [height] => 25671
             [incoming_connections_count] => 0
-            [last_known_block_index] => 16784
-            [outgoing_connections_count] => 7
+            [last_known_block_index] => 25670
+            [min_tx_fee] => 1000000
+            [next_reward] => 345901988076
+            [outgoing_connections_count] => 8
+            [readable_tx_fee] => 0.001000000
+            [rpc_connections_count] => 1
+            [start_time] => 1666071842
             [status] => OK
-            [tx_count] => 7936
-            [tx_pool_size] => 1
-            [white_peerlist_size] => 25
-            [hashrate] => 1298962.6166667
+            [top_block_hash] => cde5254a72aa6ed89c493c0201ae1f1df94e9e2218e4d9fdb1b8ff4102b2e1a7
+            [tx_count] => 12448
+            [tx_pool_size] => 15
+            [version] => 1.4.0-20221014 (#coreupgrade)
+            [version_build] => 20221014
+            [version_num] => 1.4.0
+            [version_remark] => #coreupgrade
+            [white_peerlist_size] => 38
+            [hashrate] => 24556093.15
             [max_supply] => 100000000000000000
         )';
 				echo '</pre>';
 
 				echo '<pre>';
-				echo '[total_supply] => 0
-[total_supply_block] => 0';
-				echo '</pre>';
-
-				echo '<pre>';
 				echo '[top_block] => Array
         (
-            [major_version] => 1
-            [miner_tx] => Array
+            [alreadyGeneratedCoins] => 9323869237687634
+            [alreadyGeneratedTransactions] => 38119
+            [baseReward] => 345903307592
+            [blockSize] => 146
+            [cumulativeDifficulty] => 11981870408612
+            [depth] => 0
+            [difficulty] => 2946295473
+            [effectiveSizeMedian] => 20000
+            [hash] => cde5254a72aa6ed89c493c0201ae1f1df94e9e2218e4d9fdb1b8ff4102b2e1a7
+            [index] => 25670
+            [isOrphaned] => 
+            [majorVersion] => 1
+            [minorVersion] => 0
+            [nonce] => 1047315340
+            [penalty] => 0
+            [prevBlockHash] => dbb30ba1ec6194ab0e36ddfe23f38dbf42c369e1dd389657c62bb8bdc80196aa
+            [proofOfWork] => 9a6656ef1bcd1fd04c861bede0b4f5028545d71355b9a7c471d87d6900000000
+            [reward] => 345903307592
+            [sizeMedian] => 102
+            [timestamp] => 1666087621
+            [totalFeeAmount] => 0
+            [transactions] => Array
                 (
-                    [extra] => 0171e334a7f44e2b8249ecc81ebf7718e223f3c18168f49510c7d4531996795a06021100000000274fda3fd60000000000000000
-                    [unlock_time] => 16844
-                    [version] => 1
-                    [vin] => Array
+                    [0] => Array
                         (
-                            [0] => Array
+                            [blockHash] => cde5254a72aa6ed89c493c0201ae1f1df94e9e2218e4d9fdb1b8ff4102b2e1a7
+                            [blockIndex] => 25670
+                            [extra] => Array
                                 (
-                                    [type] => ff
-                                    [value] => Array
+                                    [nonce] => Array
                                         (
-                                            [height] => 16784
+                                            [0] => 0
+                                            [1] => 0
+                                            [2] => 0
+                                            [3] => 0
+                                            [4] => 57
+                                            [5] => 182
+                                            [6] => 48
+                                            [7] => 43
+                                            [8] => 109
+                                            [9] => 0
+                                            [10] => 0
+                                            [11] => 0
+                                            [12] => 0
+                                            [13] => 0
+                                            [14] => 0
+                                            [15] => 0
+                                            [16] => 0
                                         )
 
+                                    [publicKey] => e35f1ebf55ac9584a00ad9f76464480e0cebaf04f24205dc3ae93ec909fb100a
+                                    [raw] => 01e35f1ebf55ac9584a00ad9f76464480e0cebaf04f24205dc3ae93ec909fb100a02110000000039b6302b6d0000000000000000
                                 )
 
-                        )
-
-                    [vout] => Array
-                        (
-                            [0] => Array
+                            [fee] => 0
+                            [hash] => 848bc791d4b85a4fc7d3b0ec10e2b8f03261abb3e15c4354ca20bed38ad4248c
+                            [inBlockchain] => 1
+                            [inputs] => Array
                                 (
-                                    [amount] => 91562
-                                    [target] => Array
-                                        (
-                                            [data] => Array
-                                                (
-                                                    [key] => 683bce62f540b8e415d46299ee190ad49c296f55dece41dfe716ffec49adedfc
-                                                )
-
-                                            [type] => 02
-                                        )
-
-                                )
-
-                            [1] => Array
-                                (
-                                    [amount] => 500000
-                                    [target] => Array
-                                        (
-                                            [data] => Array
-                                                (
-                                                    [key] => 640555da9cef5f4362e81f148cb360471a9dd8428f73f0a368ca581a4f48685a
-                                                )
-
-                                            [type] => 02
-                                        )
-
-                                )
-
-                            [2] => Array
-                                (
-                                    [amount] => 5000000
-                                    [target] => Array
+                                    [0] => Array
                                         (
                                             [data] => Array
                                                 (
-                                                    [key] => 45573931bdd9b25ea3916f34722d8aad96ee28c3a59145d50c811b6aac7d1876
+                                                    [amount] => 345903307592
+                                                    [input] => Array
+                                                        (
+                                                            [height] => 25670
+                                                        )
+
                                                 )
 
-                                            [type] => 02
+                                            [type] => ff
                                         )
 
                                 )
 
-                            [3] => Array
+                            [mixin] => 0
+                            [outputs] => Array
                                 (
-                                    [amount] => 10000000
-                                    [target] => Array
+                                    [0] => Array
                                         (
-                                            [data] => Array
+                                            [globalIndex] => 0
+                                            [output] => Array
                                                 (
-                                                    [key] => d96b079274b99287e3045c4a1ef1d4930be4a97b871b2a7bff35323467a2550e
+                                                    [amount] => 345903307592
+                                                    [target] => Array
+                                                        (
+                                                            [data] => Array
+                                                                (
+                                                                    [key] => 4ab5ebcdb685e5a841d98b30701f959f754588083b02292863a553c96455f042
+                                                                )
+
+                                                            [type] => 02
+                                                        )
+
                                                 )
 
-                                            [type] => 02
                                         )
 
                                 )
 
-                            [4] => Array
+                            [paymentId] => 0000000000000000000000000000000000000000000000000000000000000000
+                            [signatures] => Array
                                 (
-                                    [amount] => 800000000
-                                    [target] => Array
-                                        (
-                                            [data] => Array
-                                                (
-                                                    [key] => a0a96ea2bd65ccac9c07f8b37705d67fe50d5361cb8ae7f277355d7791035f4c
-                                                )
-
-                                            [type] => 02
-                                        )
-
                                 )
 
-                            [5] => Array
-                                (
-                                    [amount] => 7000000000
-                                    [target] => Array
-                                        (
-                                            [data] => Array
-                                                (
-                                                    [key] => 40aea94abb8c7a35e36a6e75312e306bdc6355d9c58b96a9b3721f43326844fc
-                                                )
-
-                                            [type] => 02
-                                        )
-
-                                )
-
-                            [6] => Array
-                                (
-                                    [amount] => 50000000000
-                                    [target] => Array
-                                        (
-                                            [data] => Array
-                                                (
-                                                    [key] => abcbd6e16e2dd2c115969fa82c138e6ca197f3aeb654c0799f7267f3cf73ee8a
-                                                )
-
-                                            [type] => 02
-                                        )
-
-                                )
-
-                            [7] => Array
-                                (
-                                    [amount] => 300000000000
-                                    [target] => Array
-                                        (
-                                            [data] => Array
-                                                (
-                                                    [key] => 99c24c85d2ecfacf6c806e9aa062ddf559ab462f7ecf931df1e697100f46bbb9
-                                                )
-
-                                            [type] => 02
-                                        )
-
-                                )
-
+                            [signaturesSize] => 0
+                            [size] => 102
+                            [timestamp] => 1666087621
+                            [totalInputsAmount] => 0
+                            [totalOutputsAmount] => 345903307592
+                            [unlockTime] => 25730
+                            [version] => 1
                         )
 
                 )
 
-            [minor_version] => 0
-            [nonce] => a545f018
-            [prev_id] => 594f0dd475a955e372499a42718b843090380d014c6ef1ef41eb460379d7fc4e
-            [timestamp] => 1665041845
-            [tx_hashes] => Array
-                (
-                )
+            [transactionsCumulativeSize] => 102
+        )
 
-            [dnxmined] => 357815591562
-        )';
+)';
 				echo '</pre>';
+
+				
 
 				?>
 				<br><br>

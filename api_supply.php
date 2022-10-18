@@ -13,15 +13,10 @@
 	// load block header:
 	
 	$block_header = get_block_header();
-	$output['block_header'] = $block_header;
-	$top_block = intval($block_header['last_known_block_index']);
-
-	$data = get_block($top_block);
-	$output['top_block'] = $data;
+	$output['already_generated_coins'] = $block_header['already_generated_coins'];
 
 	header('Content-Type: application/json; charset=utf-8');
 	//echo '<pre>'; print_r($output); echo '</pre>';
-
 
 	echo json_encode($output)."\n";
 

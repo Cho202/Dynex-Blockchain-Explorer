@@ -36,7 +36,7 @@
 							    curl_setopt($ch, CURLOPT_URL, $DAEMON_ENDPOINT);
 							    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
 							    curl_setopt($ch, CURLOPT_POST, 1);
-							    curl_setopt($ch, CURLOPT_POSTFIELDS, "{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"getblock\",\"params\":{\"height\":".$block."}}");	
+							    curl_setopt($ch, CURLOPT_POSTFIELDS, "{\"jsonrpc\":\"2.0\",\"id\":\"0\",\"method\":\"getblockbyheight\",\"params\":{\"blockHeight\":".$block."}}");	
 							    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
 							    curl_setopt($ch, CURLOPT_ENCODING, 'gzip,deflate');
 							    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -46,8 +46,6 @@
 							    	echo 'Error:' . curl_error($ch);
 								} else {
 									// special case, dealing with " in front and end of field blockinfo
-									$response  =str_replace( '"blockinfo":"{"', '"blockinfo":{"', $response );
-									$response = str_replace( '}","status":"OK"', '},"status":"OK"', $response );
 									$response_json = json_decode($response,true);
 									// error:
 									if (isset($response_json['error'])) {
@@ -59,50 +57,64 @@
 										exit;
 									}
 									
-									$data = $response_json['result']['blockinfo'];
-									$block_id = $response_json['result']['block_id'];
+									$data = $response_json['result']['block'];
+									$block_id = $data['hash'];
 								}
 								curl_close($ch);
 								// -------------------------------------------------------------------------------------------------------------------------------
 								echo '<div class="section p-25">'; 
 								
 								echo '<table width="100%" class="text-silver fs-12">';
-								echo '<tr class="fs-16"><td>BLOCK IDBLOCK ID:</td><td>'.$block_id.'</td></tr>';
+								echo '<tr class="fs-16 border-silver border-bottom"><td>BLOCK ID:</td><td>'.$block_id.'</td></tr>';
 								echo '<tr><td>TIMESTAMP:</td><td>'.gmdate("Y-m-d\TH:i:s\Z", $data['timestamp']).'</td></tr>';
+
+								echo '<tr><td>PROOF-OF-WORK:</td><td>'.$data['proofOfWork'].'</td></tr>';
+								
+								echo '<tr><td>&nbsp;</td><td></td></tr>';
+								echo '<tr><td>BLOCK SIZE:</td><td>'.$data['blockSize'].' BYTES</td></tr>';
+								echo '<tr><td>DIFFICULTY:</td><td>'.$data['cumulativeDifficulty'].'</td></tr>';
+								echo '<tr><td>&nbsp;</td><td></td></tr>';
+
+								$reward = intval($data['reward'])/1000000000;
+								echo '<tr><td><strong>REWARD:</strong></td><td><strong>'.number_format($reward,9,'.',',').' </strong>DNX (UNLOCKS AT BLOCK '.$data['transactions'][0]['unlockTime'].')</td></tr>';
+								$fee = intval($data['totalFeeAmount'])/1000000000;
+								echo '<tr><td><strong>TOTAL FEES:</strong></td><td><strong>'.number_format($fee,9,'.',',').' </strong>DNX</td></tr>';
+
 								echo '</table>';
 
-								
-								echo '<h4 class="text-white">MINING TRANSACTION</h4>';
-								echo '(REWARD UNLOCKS AT BLOCK: '.$data['miner_tx']['unlock_time'].')<br><br>';
-								
-								echo '<h4 class="text-white">OUTGOING TRANSACTIONS</h4>';
+								echo '<h4 class="text-white border-silver border-bottom">TRANSACTIONS</h4>';
 								echo '<table width="100%" class="text-silver fs-12">';
-								$vout = $data['miner_tx']['vout'];
-								$i = 0;
-								$amount_total = 0;
-								while($i < count($vout))
+								echo '<th>TX-HASH & PUBLIC KEY</th>';
+								echo '<th class="text-right">#INPUTS</th>';
+								echo '<th class="text-right">DNX (IN)</th>';
+								echo '<th class="text-right">#OUTPUTS</th>';
+								echo '<th class="text-right">DNX (OUT)</th>';
+								echo '<th class="text-right">FEE</th>';
+								echo '<th class="text-right">UNLOCK TIME</th>';
+								
+								$txs = $data['transactions'];
+								$i=0;
+								while($i < count($txs))
 								{
-									$amount = $vout[$i]['amount'];
-									$amount_total = $amount_total + $amount;
-									$target = $vout[$i]['target']['data']['key'];
-									$amount_str = number_format($amount/1000000000,9,'.',',');
-									$amount_str = str_pad($amount_str, 20, " ", STR_PAD_LEFT);
-									//echo '&nbsp;&nbsp;&nbsp;'.$amount_str.'DNX => KEY-IMAGE '.$target.'<br>';
-									echo '<tr class="border-dark border-bottom"><td class="text-right">'.$amount_str.' DNX</td><td> => KEY-IMAGE '.$target.'</td></tr>';
-									$i++;
+									$tx = $txs[$i];
+									echo '<tr class="border-dark border-bottom">';
+									echo '<td class="text-left"><a class="text-green" href="show_transaction.php?tx='.$tx['hash'].'">'.$tx['hash'].'</a><br>';
+									echo 'KEY: '.$tx['extra']['publicKey'].'</td>';
+									echo '<td class="text-right">'.count($tx['inputs']).'</td>';
+									$inamount = intval($tx['totalInputsAmount'])/1000000000;
+									echo '<td class="text-right">'.number_format($inamount,9,'.',',').'</td>';
+									echo '<td class="text-right">'.count($tx['outputs']).'</td>';
+									$outamount = intval($tx['totalOutputsAmount'])/1000000000;
+									echo '<td class="text-right">'.number_format($outamount,9,'.',',').'</td>';
+									$feeamount = intval($tx['fee'])/1000000000;
+									echo '<td class="text-right">'.number_format($feeamount,9,'.',',').' DNX</td>';
+									echo '<td class="text-right">'.$tx['unlockTime'].'</td>';
+									
+									echo '</tr>';
+									$i = $i + 1;
 								}
-								//echo '<br>TOTAL MINING REWARD: '.number_format($amount_total/1000000000,9,'.',',').' DNX<br><br>';
-								echo '<tr><td>&nbsp;</td><td></td></tr><tr class="fs-14 border-dark border-bottom"><td class="text-right">'.number_format($amount_total/1000000000,9,'.',',').' DNX</td><td>&nbsp;</td></tr></table>';
 
-								echo '<h4 class="text-white">TRANSACTIONS</h4>';
-								echo '<table width="100%" class="text-silver fs-12">';
-								$tx = $data['tx_hashes'];
-								$i = 0;
-								while($i < count($tx))
-								{
-									echo '<tr class="border-dark border-bottom"><td><a class="text-blue" href="show_transaction.php?tx='.$tx[$i].'">'.$tx[$i].'</a>'.'</td></tr>';
-									$i++;
-								}
+								
 								echo '</table>';
 								
 								
