@@ -25,6 +25,7 @@ include 'include_head.php';
 				
 			</div> <!-- row -->
 
+			
 			<div class="row">
 				<div class="col-md-12" valign="top">
 					<div class="card" id="1" style="background-color: #101010;">	
@@ -53,6 +54,7 @@ include 'include_head.php';
 
 			</div> <!-- row -->
 
+			
 			<div class="row">
 				<div class="col-md-12" valign="top">
 					<div class="card" id="1" style="background-color: #101010;">	
@@ -91,10 +93,10 @@ include 'include_head.php';
     $("#transactionspool").load("include_transactions_pool.php");
     $("#blocks").load("include_blocks.php");
 	setInterval(function(){
-	      $("#coredata").load("include_coredata.php");
-	      $("#transactions").load("include_transactions.php");
-	      $("#transactionspool").load("include_transactions_pool.php");
-	      $("#blocks").load("include_blocks.php");
+	      //	$("#coredata").load("include_coredata.php");
+	      //$("#transactions").load("include_transactions.php");
+	      //$("#transactionspool").load("include_transactions_pool.php");
+	      //$("#blocks").load("include_blocks.php");
 	}, 60000);
 	});
 </script>

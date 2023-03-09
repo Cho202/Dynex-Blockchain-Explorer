@@ -18,6 +18,7 @@
       </li>
     </ul>
 
+    
     <div class="wd-4 text-right" style="width: 100%;">
       <form action="show_block.php" method="post">
             <div class="form-label">FIND BLOCK NUMBER</div>
@@ -25,6 +26,7 @@
             <input type="submit" style="margin-top:5px;">
       </form>
     </div>
+  
     <div class="wd-4 text-right" style="width: 100%;">
       <form action="show_transaction.php" method="post">
             <div class="form-label">FIND TRANSACTION HASH</div>

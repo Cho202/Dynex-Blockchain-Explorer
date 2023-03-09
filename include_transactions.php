@@ -1,6 +1,7 @@
 <?php
 	include 'include_logincheck.php';
 	// GET CURRENT HEIGHT (AGAIN):
+	#exit();
 	$ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $DAEMON_ENDPOINT);
     curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
@@ -31,6 +32,8 @@
 	echo '<th class="text-right">UNLOCK TIME</th>';
 	$found_tx = 0;
 	$check_block = $height;
+	if ($height = "") exit();
+	if ($height > 10000000) exit();
 	$rem_block = 0;
 	while ($found_tx<20) {
 		// -------------------------------------------------------------------------------------------------------------------------------
@@ -93,6 +96,7 @@
 		}
 		$check_block = $check_block - 1;
 		if ($check_block==0) $found_tx = 99;
+		//echo "<pre>"; echo $check_block; echo "</pre>";
     	
 	}
 	echo '<table>';

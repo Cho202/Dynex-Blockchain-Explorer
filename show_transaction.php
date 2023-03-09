@@ -88,8 +88,10 @@
 								echo '<tr><td>PAYMENT ID:</td><td>'.$data['paymentId'].'</td></tr>';
 								
 								if ($data['blockIndex']!='0') {
-									echo '<tr><td>IN BLOCK (HASH):</td><td><a class="text-blue" href="show_block.php?block='.$data['blockIndex'].'">'.$data['blockHash'].'</a></td></tr>';
-									echo '<tr><td>IN BLOCK (HEIGHT):</td><td><a class="text-blue" href="show_block.php?block='.$data['blockIndex'].'">'.$data['blockIndex'].'</a></td></tr>';
+									echo '<tr><td>IN BLOCK (HASH):</td><td>'.$data['blockHash'].'</td></tr>';
+									echo '<tr><td>IN BLOCK (HEIGHT):</td><td>>'.$data['blockIndex'].'</td></tr>';
+									//echo '<tr><td>IN BLOCK (HASH):</td><td><a class="text-blue" href="show_block.php?block='.$data['blockIndex'].'">'.$data['blockHash'].'</a></td></tr>';
+									//echo '<tr><td>IN BLOCK (HEIGHT):</td><td><a class="text-blue" href="show_block.php?block='.$data['blockIndex'].'">'.$data['blockIndex'].'</a></td></tr>';
 								} else {
 									echo '<tr><td>BLOCK HEIGHT:</td><td class="text-yellow">IN MEMORY POOL</td></tr>';
 								}

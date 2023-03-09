@@ -17,19 +17,10 @@
 	
 	$block_header = get_block_header();
 	$output['block_header'] = $block_header;
-	$top_block = intval($block_header['last_known_block_index']);
-
-	$data = get_block($top_block);
-	$output['top_block'] = $data;
-
-	//echo '<pre>'; print_r($output); echo '</pre>';
-
-
+	
 	echo json_encode($output)."\n";
 
-	//echo '<pre>';
 	//print_r($output);
-	//echo '</pre>';
 	
 ?>
 						

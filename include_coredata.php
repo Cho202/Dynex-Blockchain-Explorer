@@ -18,6 +18,7 @@
 	}
 	curl_close($ch);
 
+	/*
 	$ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, "http://localhost:18333/json_rpc");
     curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
@@ -36,7 +37,8 @@
 		$data2 = $response_json['result']['block'];
 	}
 	curl_close($ch);
-	
+	*/
+
 	//output data:
 	echo '<div"><br><table class="fs-12 text-silver" width="100%" style="border:0px;">';
 	echo '<tr>';
@@ -44,19 +46,19 @@
 	echo '<td class="text-center" width="16%">BLOCK HEIGHT</td>';
 	echo '<td class="text-center" width="16%">DIFFICULTY</td>';
 	echo '<td class="text-center" width="16%">REWARD</td>';
-	echo '<td class="text-center" width="16%">CIRCULATING SUPPLY</td>';
+	//echo '<td class="text-center" width="16%">CIRCULATING SUPPLY</td>';
 	echo '<td class="text-center" width="16%">LATEST BLOCK</td>';
 	
 	echo '</tr>';
 	
 	echo '<tr>';
-	$hashrate_k = intval($data2['difficulty'])/120/1000;
-	echo '<td class="text-center text-white fs-14" width="16%"><strong>'.number_format($hashrate_k,0,".",",").' KH/s</strong></td>';
+	$hashrate_k = intval($data['difficulty'])/120/1000;
+	echo '<td class="text-center text-white fs-14" width="16%"><strong>'.number_format($hashrate_k,4,".",",").' KH/s</strong></td>';
 	echo '<td class="text-center text-white fs-14" width="16%"><strong>'.number_format($data['height'],0,".",",").'</strong></td>';
 	echo '<td class="text-center text-white fs-14" width="16%"><strong>'.number_format($data['difficulty'],0,".",",").'</strong></td>';
 	echo '<td class="text-center text-white fs-14" width="16%"><strong>'.number_format($data['reward']/1000000000,2,".",",").' DNX</strong></td>';
-	$total_supply_m = $data2['alreadyGeneratedCoins']/1000000000;
-	echo '<td class="text-center text-white fs-14" width="16%"><strong>'.number_format($total_supply_m,0,".",",").' DNX</strong></td>';
+	//$total_supply_m = $data2['alreadyGeneratedCoins']/1000000000;
+	//echo '<td class="text-center text-white fs-14" width="16%"><strong>'.number_format($total_supply_m,0,".",",").' DNX</strong></td>';
 
 	$ago_min = ((time()-$data['timestamp'])/60);
 	/*if ($ago_min<1) {$ago = 'LESS THAN 1 MINUTE AGO';}
